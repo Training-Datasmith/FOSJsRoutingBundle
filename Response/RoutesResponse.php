@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RoutesResponse
 {
-    protected $routes;
+    protected \Symfony\Component\Routing\RouteCollection $routes;
 
     public function __construct(
         protected ?string $baseUrl = null,

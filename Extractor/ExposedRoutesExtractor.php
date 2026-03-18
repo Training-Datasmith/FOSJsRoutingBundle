@@ -110,10 +110,8 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
     {
         $requestContext = $this->router->getContext();
 
-        $host = $requestContext->getHost().
+        return $requestContext->getHost().
             ('' === $this->getPort() ? $this->getPort() : ':'.$this->getPort());
-
-        return $host;
     }
 
     /**
@@ -153,12 +151,10 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
         }
 
         if (isset($this->bundles['JMSI18nRoutingBundle'])) {
-            $cachePath = $cachePath.DIRECTORY_SEPARATOR.'data.'.$locale.'.json';
-        } else {
-            $cachePath = $cachePath.DIRECTORY_SEPARATOR.'data.json';
+            return $cachePath.DIRECTORY_SEPARATOR.'data.'.$locale.'.json';
         }
 
-        return $cachePath;
+        return $cachePath.DIRECTORY_SEPARATOR.'data.json';
     }
 
     /**
@@ -185,7 +181,7 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
 
     protected function getDomainByRouteMatches($matches, $name): int|string|null
     {
-        $matches = array_filter($matches, fn ($match) => !empty($match));
+        $matches = array_filter($matches, fn ($match): bool => !empty($match));
 
         $matches = array_flip(array_intersect_key($matches, array_flip($this->availableDomains)));
 
@@ -206,7 +202,8 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
                 if (!isset($item['domain'])) {
                     $domainPatterns['default'][] = $item['pattern'];
                     continue;
-                } elseif (is_string($item['domain'])) {
+                }
+                if (is_string($item['domain'])) {
                     $domainPatterns[$item['domain']][] = $item['pattern'];
                     continue;
                 }
@@ -239,7 +236,10 @@ class ExposedRoutesExtractor implements ExposedRoutesExtractorInterface
      */
     private function usesNonStandardPort(): bool
     {
-        return $this->usesNonStandardHttpPort() || $this->usesNonStandardHttpsPort();
+        if ($this->usesNonStandardHttpPort()) {
+            return true;
+        }
+        return $this->usesNonStandardHttpsPort();
     }
 
     /**

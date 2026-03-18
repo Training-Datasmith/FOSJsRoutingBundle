@@ -36,7 +36,6 @@ class Controller
      *
      * @param object                          $serializer             Any object with a serialize($data, $format) method
      * @param ExposedRoutesExtractorInterface $exposedRoutesExtractor the extractor service
-     * @param bool                            $debug
      */
     public function __construct(
         private RoutesResponse $routesResponse,
