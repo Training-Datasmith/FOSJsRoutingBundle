@@ -45,7 +45,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 param('kernel.project_dir'),
                 param('fos_js_routing.request_context_base_url'),
             ])
-        
+
         ->set('fos_js_routing.router_debug_exposed_command', RouterDebugExposedCommand::class)
             ->tag('console.command')
             ->args([

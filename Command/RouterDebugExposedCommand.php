@@ -53,7 +53,8 @@ class RouterDebugExposedCommand extends Command
             ])
             ->setName('fos:js-routing:debug')
             ->setDescription('Displays currently exposed routes for an application')
-            ->setHelp(<<<EOF
+            ->setHelp(
+                <<<EOF
 The <info>fos:js-routing:debug</info> command displays an application's routes which will be available via JavaScript.
 
   <info>php app/console fos:js-routing:debug</info>

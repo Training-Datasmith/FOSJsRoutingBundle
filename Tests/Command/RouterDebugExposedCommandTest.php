@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\RouterDebugExposedCommand;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Router;
-use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 
 class RouterDebugExposedCommandTest extends TestCase
 {

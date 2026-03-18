@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use FOS\JsRoutingBundle\Controller\Controller;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
 use FOS\JsRoutingBundle\Serializer\Denormalizer\RouteCollectionDenormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
@@ -25,7 +26,6 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
-use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 
 class ControllerTest extends TestCase
 {
@@ -203,14 +203,32 @@ class ControllerTest extends TestCase
     {
         $routes = new RouteCollection();
         $routes->add('homepage', new Route('/'));
-        $routes->add('admin_index', new Route('/admin', [], [],
-            ['expose' => 'admin']));
-        $routes->add('admin_pages', new Route('/admin/path', [], [],
-            ['expose' => 'admin']));
-        $routes->add('blog_index', new Route('/blog', [], [],
-            ['expose' => 'blog'], 'localhost'));
-        $routes->add('blog_post', new Route('/blog/{slug}', [], [],
-            ['expose' => 'blog'], 'localhost'));
+        $routes->add('admin_index', new Route(
+            '/admin',
+            [],
+            [],
+            ['expose' => 'admin']
+        ));
+        $routes->add('admin_pages', new Route(
+            '/admin/path',
+            [],
+            [],
+            ['expose' => 'admin']
+        ));
+        $routes->add('blog_index', new Route(
+            '/blog',
+            [],
+            [],
+            ['expose' => 'blog'],
+            'localhost'
+        ));
+        $routes->add('blog_post', new Route(
+            '/blog/{slug}',
+            [],
+            [],
+            ['expose' => 'blog'],
+            'localhost'
+        ));
 
         $controller = new Controller(
             $this->routesResponse,
@@ -222,23 +240,35 @@ class ControllerTest extends TestCase
 
         $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
-        $response = $controller->indexAction($this->getRequest('/',
-            'GET', ['domain' => 'admin']), 'json');
+        $response = $controller->indexAction($this->getRequest(
+            '/',
+            'GET',
+            ['domain' => 'admin']
+        ), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
-        $response = $controller->indexAction($this->getRequest('/',
-            'GET', ['domain' => 'blog']), 'json');
+        $response = $controller->indexAction($this->getRequest(
+            '/',
+            'GET',
+            ['domain' => 'blog']
+        ), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
-        $response = $controller->indexAction($this->getRequest('/',
-            'GET', ['domain' => 'admin,blog']), 'json');
+        $response = $controller->indexAction($this->getRequest(
+            '/',
+            'GET',
+            ['domain' => 'admin,blog']
+        ), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
 
-        $response = $controller->indexAction($this->getRequest('/',
-            'GET', ['domain' => 'default,admin,blog']), 'json');
+        $response = $controller->indexAction($this->getRequest(
+            '/',
+            'GET',
+            ['domain' => 'default,admin,blog']
+        ), 'json');
 
         $this->assertEquals('{"base_url":"","routes":{"homepage":{"tokens":[["text","\/"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_index":{"tokens":[["text","\/admin"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"admin_pages":{"tokens":[["text","\/admin\/path"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog_index":{"tokens":[["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]},"blog_post":{"tokens":[["variable","\/","[^\/]++","slug"],["text","\/blog"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","port":null,"scheme":"","locale":"en"}', $response->getContent());
     }

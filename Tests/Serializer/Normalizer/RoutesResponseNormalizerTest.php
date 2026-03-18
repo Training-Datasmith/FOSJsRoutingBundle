@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace FOS\JsRoutingBundle\Tests\Serializer\Normalizer;
 
+use FOS\JsRoutingBundle\Response\RoutesResponse;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RouteCollectionNormalizer;
 use FOS\JsRoutingBundle\Serializer\Normalizer\RoutesResponseNormalizer;
 use PHPUnit\Framework\TestCase;
-use FOS\JsRoutingBundle\Response\RoutesResponse;
 
 class RoutesResponseNormalizerTest extends TestCase
 {

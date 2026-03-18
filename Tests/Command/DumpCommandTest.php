@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace FOS\JsRoutingBundle\Tests\Command;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
 use FOS\JsRoutingBundle\Response\RoutesResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Router;
-use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractor;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DumpCommandTest extends TestCase
 {
